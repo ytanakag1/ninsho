@@ -1,0 +1,33 @@
+#myProfileImage {
+  display: none;
+  position: absolute;
+  top: 200px;
+  left: 200px;
+  background: #fff;
+  border: solid 1px #ccc;
+  padding: 1em;
+  width: 55%;
+  box-shadow: 1px 1px 2px #999;
+}
+#button_showImage {
+  background: #ebebeb;
+  display: inline-block;
+  line-height: 18px;
+  border: 1px solid #e5e5e5;
+  padding: 9px 12px;
+  height: 36px;
+  box-sizing: border-box;
+  margin-bottom: .5em;
+  cursor: pointer;
+}
+.balloon {
+  display: none;
+  background-color: #fff0f0;
+  padding: 10px 20px;
+  position: absolute;
+  font-size: .8em;
+  border-radius: 5px;
+  border: 1px solid #777;
+  box-shadow: 3px 3px 4px #bbb;
+  left: 10em;
+}
