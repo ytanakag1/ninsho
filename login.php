@@ -1,43 +1,56 @@
-<?php
+<?php 	
 session_start();
-include "connect.php" ;
+// 06php/ch9/login.php
+// 	ファイル一つで入力と照合を行うパターン
+	require_once('connect.php');
+	// 1. POST値があるかどうか
 
-if(!empty( $_POST['user_name']) && !empty( $_POST['user_password'])
-  && $_SESSION['himitsu']==$_POST['himitsu'] 
-  && $_SESSION['himitsu2']!=$_POST['himitsu']  ){
- 
-    $sql="select user_name ,profile_image ,email ,user_password 
-    from member where  user_name = ?";
-    $sth = $dbh->prepare($sql);
-    $sth->bindValue( 1, $_POST['user_name'], PDO::PARAM_STR );
-    $sth->execute();
-      $result = $sth->fetchAll();  // 配列へ
-      if(count($result)){
-       //パスワードがハッシュにマッチするか
-        if(password_verify($_POST['user_password'], $result[0]['user_password'])){
-            echo '認証成功';
-        }else{
-            echo '認証失敗 パスワードが違います';
-        }
-        
-      }else{
-        echo "認証できません,ユーザー名がありません";
-      }
- //二重送信防止,トークン再発行
-    $_SESSION['himitsu2'] = $_POST['himitsu'];
-    $_SESSION['himitsu']= token();
-}else{
-  //何も送信していない場合
-  $_SESSION['himitsu']= token();
-  $_SESSION['himitsu2'] = "";
-}
+	if(!empty($_POST['user_email']) && !empty($_POST['user_password'] ) && !empty($_POST['himitsu']) && $_SESSION['himitsu'] == $_POST['himitsu'] ){
+		// ・あれば 2. DB接続 → メールで絞り込み
+			$sql="select email, user_password from $table_name where email = ?";
+			 $stmh = $dbh->prepare($sql);
+			 $stmh->bindValue(1,$_POST['user_email'],PDO::PARAM_STR);
+			 $stmh->execute(); 
 
+				 if( $stmh->rowCount()>0 ){
+					// ・メールがある	
+					$result = $stmh->fetchAll();  // 2次元配列へ
+							//パスワードがハッシュにマッチするか
+		
+					 		if(password_verify($_POST['user_password'], $result[0]['user_password'])){
+									// ・する →
+					 				echo "wellcome.php の表示";
 
+					 		}else{
+									// ・しない
+								viewform("パスワードが違います");
+					 		}
+			 		}else{  // メールがない
+						viewform("入力されたメールがありません");
+			 		}
+	}else{
+			// postされていない・なければ(1) と同じ
+			 	viewform();
+  }
+
+		// ・なければ(1) → 関数にする
+	function viewform( $message="" ){
+			if( !empty($message) )	echo "<h3>$message</h3>";
+			$_SESSION['himitsu'] = token();
 ?>
-
+ 入力フォームの表示
 <form method="post">
-<p>user_name: <input type="text"name="user_name">
-<p>password: <input type="password"name="user_password">
-  <input type="hidden" name="himitsu" value="<?=$_SESSION['himitsu']?>">
-<p>  <input type="submit" value="ログイン">
+	<p>user_emai: <input type="text"name="user_email">
+	<p>password: <input type="password"name="user_password">
+	<!-- . 秘密のトークンを設置する	 -->
+	  <input type="hidden" name="himitsu" value="<?=$_SESSION['himitsu']?>">
+	<p>  <input type="submit" value="ログイン">
 </form>
+<?php			
+		}
+?>
+			
+
+
+<?php 
+	
