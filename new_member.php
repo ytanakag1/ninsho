@@ -1,4 +1,5 @@
 <?php // 06_php/ch9/new_member.php
+// 完成ファイル 
 session_start();
 	// 1 connect.php読み込み
 require_once('connect.php');
@@ -7,7 +8,12 @@ require_once('connect.php');
 
 	// 3 POST値がある,なしの分岐
 
-	if( !empty($_POST['user_email']) && !empty($_POST['himitsu']) && $_POST['himitsu']==$_SESSION['himitsu'] ){
+	if( !empty($_POST['user_email']) && !empty($_POST['himitsu']) ){
+
+
+		if( $_POST['himitsu']==$_SESSION['himitsu'] 
+		&& $_SESSION['himitsu']!=@$_SESSION['himitsu2'] 
+		){
 	  // あるばあい  4 トークン発行(URLパラメータになる)
 	  $parametor = token();
 		  // 5 メールでDB検索
@@ -38,15 +44,21 @@ require_once('connect.php');
 			$body .= '/signup.php?parametor='. $parametor;
 			$body .= '&email='. $_POST['user_email'];
 			$header = 'From: webmaster@example.com';
-			mb_send_mail($_POST['user_email'],'本登録のURL',$body,$header);
+		//	mb_send_mail($_POST['user_email'],'本登録のURL',$body,$header);
 		echo "<p>送信いただいたメール宛に本登録のURLを送信しました"	;
 		// このサーバーはメールが送れないので画面に表示する
 		echo "<p>本登録のURL= $body</p>";
+	// 送信済みトークンの代入	
+		$_SESSION['himitsu2'] = $_POST['himitsu'];
+
 	}else{
+		echo "二重送信の禁止";
+	}	
 	  // POST値がない 7 メールとボタンだけのフォームの表示 	
-	  $_SESSION['himitsu']=token(9);
+}else{  $_SESSION['himitsu']=token(9);
 ?>
-<form id="fm" method="post" >
+<link rel="stylesheet" href="style.css">
+<form id="fm" method="post">
 	<p><label>Eメール: </label><input type="email" id="user_email" name="user_email" required>
 	<div id="alert"><!--ここにメッセージが埋め込まれる--></div>
 
@@ -67,10 +79,9 @@ $stmh->execute();
 ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
-//  $('#user_email').change(function(){
- $('#submit_btn').click(function(){
-	// $(document).on("click", "#submit_btn", function () {
+$('#submit_btn').click( function(){
 //POSTメソッドで送るデータを定義する
+	//予約語を使うのはやめましょう submit, click, onload
 //var data = {パラメータ : 値};
 	var email = { request : $('#user_email').val() };
 
@@ -81,14 +92,19 @@ $stmh->execute();
 		//Ajax通信が成功した場合に呼び出されるメソッド
 		success: function(data, dataType){
 			// dataはphpから書き出された文字列
-			if(data != ""){
-				$('#alert').html(data);
-				return false;
+			if(data != ""){  
+				//重複してた場合の処理
+				$('#alert').html(data).show();
+				
+				setTimeout( function(){ 
+          $("#alert").hide(500);  //0.5sかけて消える
+          window.location.href = './'; //TOPへリダイレクト
+        },5000) ;									// 5s後に実行
+
 			}else{
-				// return true;
-				// $('#submit_btn').attr('type','submit').attr('id','submit');
-				$('#alert').html('');
-				$('#fm').submit();
+				//重複してない方の処理
+				$('#alert').html(''); //メッセージを消す
+				 $('#fm').submit(); //jQueryで送信する命令
 			}
 
 		},
@@ -98,7 +114,35 @@ $stmh->execute();
 			return false;
 		}
 	});
-	 return false;
+	 return false; //これで送信が止まる
 });
 
 </script>
+<hr><pre>
+	1 入力するのはメールだけ｡
+
+	2 premember テーブルにメールを登録
+		と,ランダムな20文字も発行してパラメータとして保存する｡
+		メールは登録前に検索してあれば,パラメータを上書きする｡
+		タイムスタンプも記録する｡
+
+	3 本登録のURLにはURLパラメータ付(login.php?****)きで送信
+		このとき,仮登録のメールアドレスもパラメータに加える
+
+	4 送信するパラメータは毎回異なる
+
+	5 一回本登録URLを開いたら同じパラメータでは2度は開けない
+		パラメータでDBを検索して,
+			一件見つかる
+				DBのemail=パラメータのemail
+					正しい → OK 何もしない
+					正しくない → リダイレクト
+				行削除する (signupでやる)
+			見つからない  → リダイレクト
+
+		※本登録にメールの入力は不要( hidden で送る)
+			hiddenフィールドにラベルは不要
+
+	6 送信した本登録URLは24時間の有効期限がある
+		別のPCやブラウザでも本登録出来るようにクッキーは使わず,
+		仮登録ページが開かれるたびにDBから24時間以上経過した行を削除</pre>

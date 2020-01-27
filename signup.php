@@ -1,35 +1,32 @@
 <?php    // 06_php\ch9\sigunup.php
-	session_start(); 
-// connect.php をインクルード
-include_once("connect.php");
 
-if( empty($_SESSION['post']['email'] ))
+include_once("connect.php");    // connect.php をインクルード
+//torokから戻ったときにこの下のifブロックはやらない
+if( empty($_SESSION['post']['email'] )) //カラならtrue
 //パラメータ無しで開かせない｡
-	if( !empty($_GET['parametor']) && !empty($_GET['email']) ){
-		//あれば, prememberで検索して,emailが合っていることを確認→削除
-		$sql="select email from premember where parametor = ? AND email = ?";
-		$stmh = $dbh->prepare($sql);
-		$stmh->bindValue(1,$_GET['parametor'],PDO::PARAM_STR);
-		$stmh->bindValue(2,$_GET['email'],PDO::PARAM_STR);
-		$stmh->execute(); 
+  if( !empty($_GET['parametor']) && !empty($_GET['email'])){
+    //あれば, prememberで検索して,emailが合っていることを確認→削除
+    $sql="select email from premember where parametor = ? AND email = ?";
+    $stmh = $dbh->prepare($sql);
+    $stmh->bindValue(1,$_GET['parametor'],PDO::PARAM_STR);
+    $stmh->bindValue(2,$_GET['email'],PDO::PARAM_STR);
+    $stmh->execute(); 
+    // ヒット数をカウント → あれば削除
+      if( $stmh->rowCount() > 0 ){
+        $result = $stmh->fetchAll();  // 配列にする
+          $sql="DELETE FROM premember 
+          WHERE parametor = ? "  ;
+          $stmh = $dbh->prepare($sql);
+          $stmh->bindValue(1,$_GET['parametor'],PDO::PARAM_STR);
+          $stmh->execute(); 
+      }else{ //parametor見つからない ならリダイレクトさせる
+        header('Location: ./new_member.php'); exit;
+      }
 
-			if( $stmh->rowCount() > 0 ){
-				$result = $stmh->fetchAll();  // 配列へ
-					// あれば削除
-					$sql="DELETE FROM premember 
-					WHERE parametor = ? "  ;
-					$stmh = $dbh->prepare($sql);
-					$stmh->bindValue(1,$_GET['parametor'],PDO::PARAM_STR);
-					$stmh->execute(); 
-			}else{ //parametor見つからない
-				header('Location: ./new_member.php'); exit;// リダイレクトさせる
-			}
-
-	}else{  //prememberが無い
-		header('Location: ./new_member.php'); exit;// リダイレクトさせる
-	}
-	
-
+  }else{
+    // prememberが無い,emailが違う場合もリダイレクト
+    header('Location: ./new_member.php');  exit;
+  }
 
 
 // kenテーブルからすべて読み込む select文を書く
@@ -63,11 +60,11 @@ if( empty($_SESSION['post']['email'] ))
 	// #wameiからフォームを作る
 	foreach ($wamei as $key => $value) {
 		if($key == 'pref') continue;
-			echo $value['type'] != 'hidden' ? "<p>{$value['label']} : " : '';
-			echo "<input type='{$value['type']}' 
-				name='{$key}' {$value['required']}	id='{$value['id']}' ";
-			echo  $key == 'email' ? ' value="'. h($_GET['email']) .'"' : '';
-			echo ">";
+      echo $value['type'] != 'hidden' ? "<p>{$value['label']} : " : ''; // hiddenならラベルはいらない
+      echo "<input type='{$value['type']}' 
+        name='{$key}' {$value['required']}  id='{$value['id']}' ";
+      echo  $key == 'email' ? ' value="'. h($_GET['email']) .'"' : '';  //メールはhiddenなのでvalueが必要
+      echo ">";
 	}
 ?>
 

@@ -5,7 +5,7 @@ $auto_increment = true; //A_Iなら trueにする
 
   $host = 'localhost';
   $user = 'ginzo';
-  $psw =  'Wert3333-';
+  $psw =  'wert3333';
     $mydb = 'mysql:dbname='.$dbname.';host='.$host.';charset=utf8';
   try{
     $dbh=new PDO($mydb,$user,$psw ); //DBへ接続

@@ -1,3 +1,10 @@
+-- Adminer 4.7.5 MySQL dump
+
+SET NAMES utf8;
+SET time_zone = '+00:00';
+SET foreign_key_checks = 0;
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+
 DROP TABLE IF EXISTS `ken`;
 CREATE TABLE `ken` (
   `id` smallint(6) NOT NULL,
@@ -67,23 +74,16 @@ CREATE TABLE `member` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `member` (`user_id`, `user_name`, `profile_image`, `pref`, `seimei`, `phone`, `email`, `user_password`) VALUES
-(3,	'ginzo',	'michaeljacson.jpg',	NULL,	'tanaka',	'09012341234',	'satojiro13@gmail.com',	'$2y$10$0t4YUapK9e8nHOc.x6qe3.343QLMte1ZPLGZuDlYOeDFnWYY0Dnsm');
 
 DROP TABLE IF EXISTS `premember`;
 CREATE TABLE `premember` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) DEFAULT NULL,
-  `password` varchar(128) DEFAULT NULL,
-  `last_name` varchar(50) DEFAULT NULL,
-  `first_name` varchar(50) DEFAULT NULL,
-  `birthday` char(8) DEFAULT NULL,
-  `ken` smallint(6) DEFAULT NULL,
-  `link_pass` varchar(128) DEFAULT NULL,
-  `reg_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `parametor` varchar(128) DEFAULT NULL,
+  `email` varchar(128) DEFAULT NULL,
+  `reg_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `premember` (`id`, `username`, `password`, `last_name`, `first_name`, `birthday`, `ken`, `link_pass`, `reg_date`) VALUES
-(2,	'satojiro13@gmail.com',	'$2y$10$ynsGvp2jy2uEhjAY4x6LeeWnmuxT9vMLhad2O7a/MI3S7VijvFJju',	'中田',	'六郎',	'20190806',	11,	'fcce9a210c09cae6f57f699ee35570149f98088bebbfc8355db805a8914b5d3c',	'2019-08-06 17:45:36');
 
+-- 2020-01-24 07:34:56

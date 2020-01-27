@@ -1,8 +1,7 @@
 <?php 
 	session_start(); 
 	include_once("connect.php");
- ?>
-
+?>
 送信データの確認画面 confirm.php
 	DBに値が入るので htmlspecialcharsに
 	半角カンマ,スペース 除去も加える (SQLインジェクション対策)
@@ -11,8 +10,7 @@
 
 
 <?php
-$_SESSION['post']['email'] = empty($_POST['email']) ? '' : $_POST['email'] ; //new_memberまでもどされないように
-if( empty($_POST['user_password']) || empty($_POST['user_name']) || empty($_POST['seimei']) ) {
+if( empty($_POST['user_password']) || empty($_POST['user_name']) || empty($_POST['seimei']) || empty($_POST['email'])) {
 	echo "<meta http-equiv='Refresh' content='3; url=signup.php' />";
 	echo '<p>必須項目が入力されていません 3秒後にもとに戻ります</p>';
 	exit;  //一応処理の中断も書いておく

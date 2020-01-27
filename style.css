@@ -32,3 +32,103 @@ input[name="uploadfile"]{width: 400px;
 }
 #hide{display: none;}
 .cpswd{border: none;background-color: #fff;}
+
+input, textarea, select, button {
+    font-size: 1em;padding-bottom: 5px;border: solid 1px #6e8b7c; 
+}
+label{line-height: 2.8em;}
+
+    #alert{ display: none;
+    background-color: #fff0f0;
+    padding: 10px 20px;
+    position: absolute;
+    font-size: .8em;
+    border-radius: 5px;
+    border: 1px solid #777;
+    box-shadow: 3px 3px 4px #bbb;
+    left: 10em;
+  }
+ #alert strong {
+    width: 23px;
+    height: 25px;
+    font-size: 1.5em;
+    background: #f5b82d;
+    display: block;
+    float: left;
+    padding: 0px 4px 2px 8px;
+    box-sizing: border-box;
+    color: #fff;
+    vertical-align: middle;
+    border-radius: 3px;
+    margin-right: 5px; height: 
+  } 
+ #alert p {float: left;
+    margin-top: -3px;
+    } 
+
+  #button_showImage{
+    background: #870010;
+    display: inline-block;
+    line-height: 18px;
+    border: 1px solid #e5e5e5;
+    padding: 9px 12px;
+    height: 36px;
+    box-sizing: border-box;
+    margin-bottom: .5em;
+    cursor: pointer;
+}
+
+
+#myProfileImage{display: none;
+        position: absolute;
+    top: 200px;
+    left: 200px;
+    background: #fff;
+    border: solid 1px #ccc;
+    padding: 1em;width: 55%;
+    box-shadow: 1px 1px 2px #999;
+}
+input[name="profile_image"]{  width: 30em;
+    border: none;
+    margin-left: 10em;
+    
+}
+#finalSubmit{height: 38px;
+    font-size: 1em;
+    margin: 1em 12em;
+    
+}
+input[name='file_1']{border:none;}
+input[type='radio']{height: inherit;}
+.site-main{position: relative;margin: 30px auto;
+    max-width: 980px;
+    
+}
+
+.avatarContainer{    margin-left: 200px;}
+
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="password"],
+input[type="search"]{
+    padding: 6px 0 6px 9px;
+}
+
+
+button, .comment-reply-link, a.button, input[type="button"], input[type="reset"], input[type="submit"] {
+    background: #fa6161 none repeat scroll 0 0;
+    color: #fff;
+    font-size: 17px;
+    line-height: 1;
+    padding: 13px 35px;
+    display: inline-block;
+    font-family: 'Barlow', sans-serif;
+    border-radius: 0px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+button:hover, .comment-reply-link, a.button:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type="submit"]:hover {
+    background-color: #2e2e2e;
+    color: #fff;
+}
