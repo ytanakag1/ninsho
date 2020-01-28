@@ -42,9 +42,10 @@ require_once('connect.php');
 			$body .=  $_SERVER["SERVER_NAME"];
 			$body .= dirname($_SERVER['SCRIPT_NAME']);
 			$body .= '/signup.php?parametor='. $parametor;
-			$body .= '&email='. $_POST['user_email'];
+			$body .= '&email='. urlencode($_POST['user_email']);
 			$header = 'From: webmaster@example.com';
-		//	mb_send_mail($_POST['user_email'],'本登録のURL',$body,$header);
+
+			mb_send_mail($_POST['user_email'],'本登録のURL',$body,$header);
 		echo "<p>送信いただいたメール宛に本登録のURLを送信しました"	;
 		// このサーバーはメールが送れないので画面に表示する
 		echo "<p>本登録のURL= $body</p>";

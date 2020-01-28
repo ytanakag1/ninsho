@@ -1,7 +1,10 @@
 <?php    // 06_php\ch9\sigunup.php
+session_start();
 
 include_once("connect.php");    // connect.php をインクルード
 //torokから戻ったときにこの下のifブロックはやらない
+// var_dump($_GET['parametor'],$_GET['email'] );
+// exit;
 if( empty($_SESSION['post']['email'] )) //カラならtrue
 //パラメータ無しで開かせない｡
   if( !empty($_GET['parametor']) && !empty($_GET['email'])){
