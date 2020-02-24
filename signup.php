@@ -99,10 +99,6 @@ if( empty($_SESSION['post']['email'] )) //カラならtrue
 	}
 
 </script>
- <p>"06php/ch9/sigunup.php" ここにあるのでコピペ</p>
-http://192.168.175.99/
-		→ public/06_php/ch9/sigunup.php
-
 
 <div id="myProfileImage">
 	<form id="my_form">

@@ -1,6 +1,5 @@
 <?php 	
 session_start();
-// 06php/ch9/login.php
 // 	ファイル一つで入力と照合を行うパターン
 	require_once('connect.php');
 	// 1. POST値があるかどうか
@@ -39,7 +38,7 @@ session_start();
 			$_SESSION['himitsu'] = token();
 ?>
 <link rel="stylesheet" href="style.css">
- ログインしてください
+ <h3>ログインしてください</h3>
 <form method="post">
 	<p>メールアドレス: <input type="text"name="user_email">
 	<p>パスワード: <input type="password"name="user_password">
