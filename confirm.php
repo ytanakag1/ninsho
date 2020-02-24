@@ -41,9 +41,8 @@ if( empty($_POST['user_password']) || empty($_POST['user_name']) || empty($_POST
 	</button>
 
 <p>
-"Z:\06_php\ch9\eye-icon.png" 目のアイコンをダウンロードしてください
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-<script>  //目のiconでパスワードが表示される
+<script>  //目のiconでパスワードが表示される push requestのための更新
 	$('#see').click(function(){
 		$( '[type="password"]').attr('type','text');
 		$(this).hide();
@@ -56,14 +55,3 @@ if( empty($_POST['user_password']) || empty($_POST['user_name']) || empty($_POST
 		$('#see').show();
 	}	);
 </script>
-	<ol>
-	<li>必須項目が全てPOSTされてなければ3秒で前のページに戻る</li>
-	<li>$_POSTをループしてh()関数に入れて戻り値を$clean配列に代入</li>
-	<li>$clean 配列をループして 項目名 |  入力値のペアで表示</li>
-	<li>SESSION変数に代入</li>
-	<li>torok.phpへのリンクを作ってボタンっぽくする</li>
-</ol>
-<pre>どこかのページへリダイレクトさせる方法
-		1. phpの header()関数 (文字を書き出す前なら使える)
-		2. javascriptの  location.href="URL"
-		3. htmlの meta refresh (秒数)
