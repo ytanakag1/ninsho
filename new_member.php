@@ -11,7 +11,7 @@ require_once('connect.php');
 
 	if( !empty($_POST['user_email']) && !empty($_POST['himitsu']) ){
 
-
+var_dump($dbh);
 		if( $_POST['himitsu']==$_SESSION['himitsu'] 
 		&& $_SESSION['himitsu']!=@$_SESSION['himitsu2'] 
 		){
@@ -22,22 +22,30 @@ require_once('connect.php');
 	  	 $stmh = $dbh->prepare($sql);
 			 $stmh->bindValue(1,$_POST['user_email'],PDO::PARAM_STR);
 			 $stmh->execute(); 
-				if( $stmh->rowCount()>0 ){
+			echo 'rowCount = ', $stmh->rowCount();
+
+				if( $stmh->rowCount() > 0 ){
 		  	// 1行以上あるならその行にUPDATE文
 					$sql = "UPDATE $table_name 
-					SET parametor = $parametor ,
-					WHERE email = ?";
-					$stmh->bindValue(1,$_POST['user_email'],PDO::PARAM_STR);
+					SET `parametor` = ? 
+					WHERE `email` = ? 
+					";
+					$stmh = $dbh->prepare($sql);
+					$stmh->bindValue(1,$parametor,PDO::PARAM_STR);
+					$stmh->bindValue(2,$_POST['user_email'],PDO::PARAM_STR);
+					$success = $stmh->execute(); 
+		echo 'UPDATE ',$success;
 				}else{
 		  	// ないなら INSERT文
-					$sql="INSERT INTO $table_name (email,parametor)
+					$sql="INSERT INTO $table_name (`email`,`parametor`)
           VALUES ( ? , ?)";
-    // var_dump($sql,$_POST['user_email'],$parametor);      
           $stmh = $dbh->prepare($sql);
           $stmh->bindValue(1,$_POST['user_email'],PDO::PARAM_STR);
-          $stmh->bindValue(2,$parametor,PDO::PARAM_STR);
-          $stmh->execute(); 
+					$stmh->bindValue(2,$parametor,PDO::PARAM_STR);
+					$success = $stmh->execute(); 
+		echo		'INSERT ',$success;
 				}
+				var_dump($sql,$_POST['user_email'],$parametor);      
 		  // 6 メール送信 signup.php?parametor=***&email=***@**のURLが本文
 			$body = '本登録するには次のリンクをクリックしてください｡'."\r\n";
 			$body .=  $_SERVER["SERVER_NAME"];
